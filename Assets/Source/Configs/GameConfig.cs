@@ -1,3 +1,4 @@
+using Source.Enums;
 using Source.View;
 using UnityEngine;
 
@@ -21,6 +22,19 @@ namespace Source.Configs
         public Color blueColor;
         public int blueCost;
 
-        [Header("Player Settings")] public int startingEnergy;
+        [Header("Player Settings")] public PlayerView playerViewPrefab;
+        public int startingEnergy;
+
+
+        public int GetTilePrice(ETileColor color)
+        {
+            return color switch
+            {
+                ETileColor.Green => greenCost,
+                ETileColor.Yellow => yellowCost,
+                ETileColor.Blue => blueCost,
+                _ => 0
+            };
+        }
     }
 }
