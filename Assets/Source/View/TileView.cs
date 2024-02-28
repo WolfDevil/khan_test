@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Source
+namespace Source.View
 {
     public class TileView : MonoBehaviour
     {
@@ -9,7 +9,7 @@ namespace Source
 
         private Action _onClick;
 
-        private void Setup(Color color, Action onClick)
+        public void Setup(Color color, Action onClick)
         {
             _onClick += onClick;
             squareSpriteRenderer.color = color;
