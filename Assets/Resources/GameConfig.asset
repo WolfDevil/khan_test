@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d0d09083ab7c35408069a8f0180546c, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
+  mapViewPrefab: {fileID: 7440275115469801908, guid: 0a1773de7e001ae488013c37e6b4aa98, type: 3}
   mapSize: 7
   tileSize: 1
   tileOffset: 0.05
   tilePrefab: {fileID: 5865684734852993196, guid: 1e7adb6641dcce240b024acac3536e56, type: 3}
   greenColor: {r: 0.4009434, g: 1, b: 0.53999615, a: 1}
+  greenCost: 1
   yellowColor: {r: 1, g: 0.83614916, b: 0.2971698, a: 1}
+  yellowCost: 2
   blueColor: {r: 0.3537736, g: 0.62956023, b: 1, a: 1}
+  blueCost: -1
+  playerViewPrefab: {fileID: 6930485747123502115, guid: b3713fa4cf265104498feebdbf012611, type: 3}
+  startingEnergy: 10

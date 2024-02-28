@@ -17,5 +17,15 @@ namespace Source.Data
             var index = GetTileIndex(id);
             return Tiles[index];
         }
+
+        public bool CheckDirection((int, int) playerTile, (int, int) clickedTile)
+        {
+            return !(
+                playerTile.Equals(clickedTile) ||
+                (playerTile.Item1 != clickedTile.Item1 && playerTile.Item2 != clickedTile.Item2)
+            );
+        }
+        
+        
     }
 }

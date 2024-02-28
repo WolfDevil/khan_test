@@ -2,64 +2,56 @@ using System;
 using Source.Configs;
 using Source.Data;
 using Source.View;
-using UnityEngine;
 using Zenject;
 
 namespace Source.Controller
 {
-    public class GameController : MonoBehaviour
+    public class GameController : IInitializable
     {
-        [Inject] private GameConfig _gameConfig;
+        private readonly GameConfig _gameConfig;
+        private readonly MapView _mapView;
+        private readonly PlayerView _playerView;
 
         private PlayerData _playerData;
         private MapData _mapData;
 
-        private MapView _mapView;
-        private PlayerView _playerView;
 
-        private void Start()
+        public GameController(GameConfig gameConfig, MapView mapView, PlayerView playerView)
+        {
+            _gameConfig = gameConfig;
+            _mapView = mapView;
+            _playerView = playerView;
+        }
+
+
+        public void Initialize()
         {
             _mapData = MapDataGenerator.Generate(_gameConfig.mapSize, 0.1f);
-            _mapView = Instantiate(_gameConfig.mapViewPrefab);
             _mapView.Setup(_mapData, OnTileClicked, _gameConfig);
 
             _playerData = new PlayerData();
             _playerData.currentTile = (0, 0);
             _playerData.energyLeft = _gameConfig.startingEnergy;
 
-            _playerView = Instantiate(_gameConfig.playerViewPrefab);
             var pos = _mapView.GetTilePosition(_playerData.currentTile);
             pos.z = -1;
             _playerView.MoveTo(pos);
         }
 
+
         private void OnTileClicked((int, int) id)
         {
             var pos = _mapView.GetTilePosition(id);
             pos.z = -1;
-            var dirCheck = CheckDirection(_playerData.currentTile, id);
-            var cost = -1;
-            if (dirCheck)
-            {
-                cost = GetCost(_playerData.currentTile, id);
-                if (cost >= 0 && _playerData.energyLeft >= cost)
-                {
-                    _playerData.currentTile = id;
-                    _playerData.energyLeft -= cost;
-                    _playerView.MoveTo(pos);
-                }
-            }
+            var dirCheck = _mapData.CheckDirection(_playerData.currentTile, id);
+            if (!dirCheck) return;
 
-            Debug.Log(
-                $"Clicked {id}, pos: {pos}, dirCheck: {dirCheck}, cost: {cost}, energyLeft: {_playerData.energyLeft}");
-        }
+            var cost = GetCost(_playerData.currentTile, id);
+            if (cost < 0 || _playerData.energyLeft < cost) return;
 
-        private bool CheckDirection((int, int) playerTile, (int, int) clickedTile)
-        {
-            return !(
-                playerTile.Equals(clickedTile) ||
-                (playerTile.Item1 != clickedTile.Item1 && playerTile.Item2 != clickedTile.Item2)
-            );
+            _playerData.currentTile = id;
+            _playerData.energyLeft -= cost;
+            _playerView.MoveTo(pos);
         }
 
         private int GetCost((int, int) playerTile, (int, int) clickedTile)
