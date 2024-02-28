@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Source.Configs;
 using Source.Data;
 using Source.Enums;
@@ -8,17 +10,13 @@ namespace Source.View
 {
     public class MapView : MonoBehaviour
     {
-        [Inject] private GameConfig _gameConfig;
+        private GameConfig _gameConfig;
+        private List<TileView> _tiles;
 
-        private void Start()
+        public void Setup(MapData mapData, Action<(int, int)> onTileClicked, GameConfig gameConfig)
         {
-            SpawnTiles();
-            UpdateLayout();
-        }
-
-        private void SpawnTiles()
-        {
-            var mapData = MapDataGenerator.Generate(_gameConfig.mapSize, 0.1f);
+            _gameConfig = gameConfig;
+            _tiles = new List<TileView>(mapData.MapSize * mapData.MapSize);
 
             foreach (var tileData in mapData.Tiles)
             {
@@ -32,12 +30,17 @@ namespace Source.View
                     _ => Color.white
                 };
 
-                tile.Setup(color, () => OnTileClicked(tileData.ID));
+                tile.Setup(color, () => onTileClicked?.Invoke(tileData.ID));
+                _tiles.Add(tile);
             }
+
+            UpdateLayout();
         }
 
-        private void OnTileClicked((int, int) id)
+        public Vector3 GetTilePosition((int, int) id)
         {
+            var tileIndex = id.Item1 * _gameConfig.mapSize + id.Item2;
+            return _tiles[tileIndex].transform.position;
         }
 
         private void UpdateLayout()
@@ -50,9 +53,9 @@ namespace Source.View
             var x = 0;
             var y = 0;
 
-            foreach (Transform child in transform)
+            foreach (var tile in _tiles)
             {
-                child.position = new Vector3(x * step - widthHalf, y * step * -1 + widthHalf);
+                tile.transform.position = new Vector3(x * step - widthHalf, y * step * -1 + widthHalf);
 
                 if (y < _gameConfig.mapSize)
                 {
