@@ -1,36 +1,28 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Source.Configs;
 using UnityEngine;
+using Zenject;
 
 public class MapGrid : MonoBehaviour
 {
-    [SerializeField] private int mapSize;
-    [SerializeField] private float tileSize;
-    [SerializeField] private float offset;
+    [Inject] GameConfig _gameConfig;
 
-    private void FixedUpdate()
+    public void UpdateLayout()
     {
-        UpdateLayout();
-    }
-
-    private void UpdateLayout()
-    {
-        int x = 0;
-        int y = 0;
-
-        var width = tileSize * (mapSize-1) + offset * (mapSize - 1);
+        var width = _gameConfig.tileSize * (_gameConfig.mapSize - 1) +
+                    _gameConfig.tileOffset * (_gameConfig.mapSize - 1);
         var widthHalf = width / 2;
-        var step = width / (mapSize-1);
+        var step = width / (_gameConfig.mapSize - 1);
 
-
+        var x = 0;
+        var y = 0;
         foreach (Transform child in transform)
         {
             child.position = new Vector3(x * step - widthHalf, y * step * -1 + widthHalf);
 
-            if (y < mapSize - 1)
+            if (y < _gameConfig.mapSize - 1)
             {
-                if (x < mapSize - 1)
+                if (x < _gameConfig.mapSize - 1)
                 {
                     x++;
                 }
@@ -42,7 +34,8 @@ public class MapGrid : MonoBehaviour
             }
             else
             {
-                break;
+                Debug.Log("Too many tiles in map grid");
+                return;
             }
         }
     }

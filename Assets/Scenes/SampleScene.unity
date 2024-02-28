@@ -947,7 +947,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: 88c580aca2fe37342b743ecb2dd9bc38, type: 2}
   _monoInstallers: []
   _installerPrefabs: []
   _autoRun: 1
@@ -1567,6 +1568,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1608591489}
   - component: {fileID: 1608591488}
+  - component: {fileID: 1608591490}
   m_Layer: 0
   m_Name: MapView
   m_TagString: Untagged
@@ -1586,9 +1588,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ae567d7b3441644b7d27c5fa5d05db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: 6
-  tileSize: 1
-  offset: 0.1
 --- !u!4 &1608591489
 Transform:
   m_ObjectHideFlags: 0
@@ -1617,6 +1616,19 @@ Transform:
   - {fileID: 1317072308}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1608591490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608591487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea0b86fc93002145b6d85fb5dd30e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapGrid: {fileID: 1608591488}
 --- !u!1 &1685351103
 GameObject:
   m_ObjectHideFlags: 0

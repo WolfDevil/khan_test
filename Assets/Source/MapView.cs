@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class MapView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private MapGrid mapGrid;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        mapGrid.UpdateLayout();
     }
 }
