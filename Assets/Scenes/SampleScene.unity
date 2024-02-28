@@ -692,8 +692,9 @@ GameObject:
   - component: {fileID: 683290253}
   - component: {fileID: 683290252}
   - component: {fileID: 683290251}
+  - component: {fileID: 683290255}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -783,6 +784,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &683290255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683290250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ae656231efec44c878edfd33c82e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyText: {fileID: 1475067726}
+  endTurnButton: {fileID: 1410553500}
 --- !u!1 &772082001
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapView: {fileID: 430182413}
   playerView: {fileID: 233613345}
+  hudView: {fileID: 683290255}
 --- !u!4 &772082003
 Transform:
   m_ObjectHideFlags: 0
@@ -1152,11 +1168,11 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 165833580}
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 928723576}
-  - {fileID: 430182412}
-  - {fileID: 233613344}
   - {fileID: 772082003}
   - {fileID: 683290254}
-  - {fileID: 165833580}
+  - {fileID: 430182412}
+  - {fileID: 233613344}

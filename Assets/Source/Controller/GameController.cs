@@ -1,6 +1,7 @@
 using System;
 using Source.Configs;
 using Source.Data;
+using Source.Signals;
 using Source.View;
 using Zenject;
 
@@ -11,16 +12,22 @@ namespace Source.Controller
         private readonly GameConfig _gameConfig;
         private readonly MapView _mapView;
         private readonly PlayerView _playerView;
+        private readonly HUDView _hudView;
+        private readonly SignalBus _signalBus;
 
         private PlayerData _playerData;
         private MapData _mapData;
+        private EnergyChangedSignal _energyChangedSignal = new EnergyChangedSignal();
 
 
-        public GameController(GameConfig gameConfig, MapView mapView, PlayerView playerView)
+        public GameController(GameConfig gameConfig, MapView mapView, PlayerView playerView, HUDView hudView,
+            SignalBus signalBus)
         {
             _gameConfig = gameConfig;
             _mapView = mapView;
             _playerView = playerView;
+            _hudView = hudView;
+            _signalBus = signalBus;
         }
 
 
@@ -33,9 +40,21 @@ namespace Source.Controller
             _playerData.currentTile = (0, 0);
             _playerData.energyLeft = _gameConfig.startingEnergy;
 
+            _hudView.Setup(_signalBus, _playerData.energyLeft);
+
+            _signalBus.Subscribe<EndTurnSignal>(OnEndTurn);
+
             var pos = _mapView.GetTilePosition(_playerData.currentTile);
             pos.z = -1;
             _playerView.MoveTo(pos);
+        }
+
+
+        private void OnEndTurn()
+        {
+            _playerData.energyLeft = _gameConfig.startingEnergy;
+            _energyChangedSignal.Value = _playerData.energyLeft;
+            _signalBus.TryFire(_energyChangedSignal);
         }
 
 
@@ -51,6 +70,8 @@ namespace Source.Controller
 
             _playerData.currentTile = id;
             _playerData.energyLeft -= cost;
+            _energyChangedSignal.Value = _playerData.energyLeft;
+            _signalBus.TryFire(_energyChangedSignal);
             _playerView.MoveTo(pos);
         }
 

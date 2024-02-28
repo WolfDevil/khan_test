@@ -15,6 +15,7 @@ namespace Source.Installers
             SignalBusInstaller.Install(Container);
 
             Container.DeclareSignal<EnergyChangedSignal>();
+            Container.DeclareSignal<EndTurnSignal>();
         }
     }
 }
